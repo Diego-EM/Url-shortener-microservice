@@ -14,38 +14,14 @@
 <body>
     <h1>URL shortener</h1>
     <p id="message"></p>
-    <form id="form">
-        <input type="text" placeholder="Type a URL" name="url">
+    <form id="form" method="POST" action="api/shorturl">
+        <input type="text" placeholder="Type a URL" name="url" required>
         <input type="submit" value="Send" id="form_button">
     </form>
     <h3>Usage</h3>
     <p>[GET] <span id="host"></span>api/shorturl/:short_url</p>
     <script>
         const host = document.getElementById('host').textContent = location;
-        const button = document.getElementById('form_button');
-        button.addEventListener('click',(e)=>{
-            e.preventDefault();
-            const form = document.getElementById('form');
-            const data = new FormData(form);
-            const body = JSON.stringify(Object.fromEntries(data));
-            const validation = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig;
-            if (validation.test(data.get('url'))){
-                fetch(`${location}api/shorturl`,{
-                    method: 'POST',
-                    headers:{
-                        "Content-Type" : "application/json"
-                    },
-                    body: body
-                })
-                .then(response => response.json())
-                .then(data => 
-                    document.getElementById('message').textContent = `Short url -> ${data.short_url}`
-                    );
-                document.getElementById('message').textContent = "";
-            } else {
-                document.getElementById('message').textContent = "Type a valid URL";
-            }
-        })
     </script>
 </body>
 </html>

@@ -40,9 +40,16 @@ dbController.addURL = async (req, res) => {
 }
 
 dbController.getURL = async (req, res) => {
-    const id = req.params.id;
-    const url = await dbSchema.find({short_url: id});
-    res.redirect(301, url[0].original_url);
+    try{
+        const id = req.params.id;
+        const url = await dbSchema.find({short_url: id});
+        res.redirect(301, url[0].original_url);
+    }
+    catch(e){
+        res.json({
+            error: "Id not found"
+        })
+    }
 }
 
 module.exports = dbController;
